@@ -12,13 +12,36 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  margin: 0;
+}
+
 .page {
   display: flexbox;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 10px;
   height: 100vh;
+}
+
+.navbar {
+  max-width: 100%;
+  margin: 0 auto;
+  margin-bottom: 150px;
+  padding: 60px;
+  border: 1px solid transparent;
+  border-radius: 0px 0px 19px 19px;
+  box-shadow: 0 0px 15px #0057ff;
+  z-index: 1000;
+  top: 0;
+  display: block;
+}
+
+.navbar-nav {
+  list-style: none; /* Remove default list styles */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  display: flex; /* Use flexbox for layout */
 }
 
 .container {
@@ -42,7 +65,8 @@ label {
 }
 
 .login__input[type="email"],
-.login__input[type="password"] {
+.login__input[type="password"],
+.login__input[type="text"] {
   border: none;
   border-bottom: 2px solid #d1d1d4;
   background: none;
@@ -75,4 +99,5 @@ button {
 .register_warning {
   margin-top: 50px;
   color: #2d224c;
+  text-align: center;
 }
