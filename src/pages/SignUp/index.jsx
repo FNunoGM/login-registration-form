@@ -1,38 +1,50 @@
 import { useState } from "react";
 import axios from "axios";
-import Navbar from "../../components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 function SignUp() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState(""); // New state for first name
-  const [lastName, setLastName] = useState(""); // New state for last name
-  const [error, setError] = useState("");
+  let history = useNavigate();
 
-  const handleSubmit = async e => {
+  const [data, setData] = useState({
+    nome: "",
+    cognome: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = e => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = e => {
     e.preventDefault();
+    const updatedData = {
+      nome: data.nome,
+      cognome: data.cognome,
+      email: data.email,
+      password: data.password,
+    };
 
-    try {
-      const response = await axios.post("/signup.php", {
-        // Assuming signup endpoint
-        email,
-        password,
-        firstName, // Include first name in the request
-        lastName, // Include last name in the request
+    setData(updatedData);
+
+    console.log(updatedData);
+
+    axios
+      .post(
+        "http://localhost/login-registration-form-php/signup.php",
+        updatedData
+      )
+      .then(result => {
+        if (result.data.Status == "Invalid") {
+          alert("Invalid User");
+        } else {
+          history(`/SignIn`);
+        }
       });
-      console.log(response.data); // Log response from backend for debugging
-
-      // Assuming the backend responds with a success message
-      alert("Registration successful"); // You can replace this with your redirect logic
-    } catch (error) {
-      console.error("Error:", error.response.data); // Log error for debugging
-      setError("Registration failed"); // Update error state
-    }
   };
 
   return (
     <div className="page">
-      <Navbar />
       <div className="container">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -42,10 +54,9 @@ function SignUp() {
               placeholder="Mario"
               type="text"
               id="firstName"
-              name="firstName"
-              value={firstName}
-              onChange={e => setFirstName(e.target.value)}
-              required
+              name="nome" // Corrected name attribute
+              value={data.nome}
+              onChange={handleChange}
             />
           </div>
           <div className="form-group">
@@ -55,9 +66,9 @@ function SignUp() {
               placeholder="Rossi"
               type="text"
               id="lastName"
-              name="lastName"
-              value={lastName}
-              onChange={e => setLastName(e.target.value)}
+              name="cognome"
+              value={data.cognome}
+              onChange={handleChange}
               required
             />
           </div>
@@ -69,8 +80,8 @@ function SignUp() {
               type="email"
               id="email"
               name="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              value={data.email}
+              onChange={handleChange}
               required
             />
           </div>
@@ -82,13 +93,11 @@ function SignUp() {
               type="password"
               id="password"
               name="password"
-              value={password}
-              onChange={e => setPassword(e.target.value)}
+              value={data.password}
+              onChange={handleChange}
               required
             />
           </div>
-          {error && <p className="error">{error}</p>}{" "}
-          {/* Display error message if there's an error */}
           <button type="submit">REGISTRATI</button>
         </form>
         <p className="register_warning">Hai già un account? Accedi</p>

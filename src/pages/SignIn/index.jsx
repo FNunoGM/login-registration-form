@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import Navbar from "../../components/Navbar";
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -24,7 +23,6 @@ function SignIn() {
 
   return (
     <div className="page">
-      <Navbar />
       <div className="container">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
